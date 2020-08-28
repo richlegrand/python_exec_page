@@ -4,22 +4,23 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 function postData() {
-  var value = $('.text').val();
   $.ajax({
     type: 'POST',
     url: "/post_data",
-    data: JSON.stringify("hello"),
+    data: JSON.stringify($('#code').val()),
     contentType: 'application/json',
     dataType: "json",
-    success: function(data){
-      console.log("yay");
-      // do something with the received data
-    }
   });
 }
 </script>
 </head>
 <body>
-<button type="button" id="myBtn" onclick="postData()">Try it</button>
+<div>
+  <textarea id="code" name="code" rows="50" cols="80" style="overflow: scroll;">
+  </textarea>
+</div>
+<div>
+  <button type="button" id="myBtn" onclick="postData()">Run!</button>
+</div>
 </body>
 </html>
