@@ -10,7 +10,10 @@ function postData() {
     data: JSON.stringify($('#code').val()),
     contentType: 'application/json',
     dataType: "json",
-  });
+    success: function(data){
+        console.log("received", data);
+      }  
+    });
 }
 </script>
 </head>
