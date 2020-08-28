@@ -1,7 +1,22 @@
 from flask import Flask, Response, request, render_template
 import json
+import subprocess
 
 app = Flask(__name__)
+
+def run_python(code, timeout=5, maxlen=5000):
+    proc = subprocess.Popen(['python3'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        out, err = proc.communicate(bytes(code, 'utf-8'), timeout=timeout)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        return "Sorry, your program took too long to execute!"
+    else:
+        out = out.decode('utf-8')
+        if len(out)>maxlen:
+            return "Sorry, you program's output is too lengthy!"
+        return out + err.decode('utf-8')
+
 
 @app.route('/')
 def index():
@@ -10,11 +25,9 @@ def index():
 @app.route('/post_data', methods=['POST'])
 def post_data():
     if request.method == "POST":
-        data = json.loads(request.data)
-        print("posted:", data)
-        return  Response(
-                json.dumps("hello"),
-                mimetype="application/json",
-            )
+        code = json.loads(request.data)
+        out = run_python(code)
+        return Response(json.dumps(out), mimetype="application/json")
+        
 if __name__ == '__main__':
     app.run(port=5000, host="0.0.0.0")

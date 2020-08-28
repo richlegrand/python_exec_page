@@ -11,13 +11,14 @@ function postData() {
     contentType: 'application/json',
     dataType: "json",
     success: function(data){
-        console.log("received", data);
+        $('#output').html(data);
       }  
     });
 }
 </script>
 </head>
 <body>
+<p>Type in Python code:</p>  
 <div>
   <textarea id="code" name="code" rows="50" cols="80" style="overflow: scroll;">
   </textarea>
@@ -25,5 +26,7 @@ function postData() {
 <div>
   <button type="button" id="myBtn" onclick="postData()">Run!</button>
 </div>
+<p>Output:</p>
+<p id="output" style="white-space: pre-wrap;"></p>
 </body>
 </html>
