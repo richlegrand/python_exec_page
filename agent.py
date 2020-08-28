@@ -29,6 +29,10 @@ def post_data():
     if request.method == "POST":
         with lock:
             code = json.loads(request.data)
+            # Prevent any imports for our protection
+            code = code.replace('import', '')
+            # Add any imports that we need here
+            #code = "import foo\n" + code
             out = run_python(code)
             return Response(json.dumps(out), mimetype="application/json")
 
