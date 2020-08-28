@@ -27,14 +27,14 @@ def index():
 @app.route('/post_data', methods=['POST'])
 def post_data():
     if request.method == "POST":
-        with lock:
-            code = json.loads(request.data)
-            # Prevent any imports for our protection
-            code = code.replace('import', '')
-            # Add any imports that we need here
-            #code = "import foo\n" + code
+        code = json.loads(request.data)
+        # Prevent any imports for our protection
+        code = code.replace('import', '')
+        # Add any imports that we need here
+        #code = "import foo\n" + code
+        with lock: # Prevent programs from stepping on each other
             out = run_python(code)
-            return Response(json.dumps(out), mimetype="application/json")
+        return Response(json.dumps(out), mimetype="application/json")
 
 if __name__ == '__main__':
     app.run(port=5000, host="0.0.0.0")
