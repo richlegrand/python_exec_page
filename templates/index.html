@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+function postData() {
+  var value = $('.text').val();
+  $.ajax({
+    type: 'POST',
+    url: "/post_data",
+    data: JSON.stringify("hello"),
+    contentType: 'application/json',
+    dataType: "json",
+    success: function(data){
+      console.log("yay");
+      // do something with the received data
+    }
+  });
+}
+</script>
+</head>
+<body>
+<button type="button" id="myBtn" onclick="postData()">Try it</button>
+</body>
+</html>
